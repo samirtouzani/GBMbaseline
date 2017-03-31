@@ -1,0 +1,18 @@
+Package: GBMbaseline
+Type: Package
+Title: Gradient boosting machine for building energy modeling
+Version: 0.1.0
+Authors@R: person("Samir", "Touzani", email = "stouzani@lbl.gov", role = c("aut", "cre"))
+Description: An R package for generating baseline models of electric load using Gradient Boosting Machine algorithm
+License: refer to the Licence.txt file
+LazyData: TRUE
+RoxygenNote: 5.0.1
+Imports:
+    dplyr,
+    xgboost,
+    caret,
+    dygraphs,
+    lubridate,
+    parallel,
+    xts
+LazyData: true
