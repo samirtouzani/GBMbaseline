@@ -11,7 +11,7 @@ install.packages("devtools")
  Install the GBMbaseline package using the following command:
 
 ```r
-devtools::install_github("https://github.com/samirtouzani/GBMbaseline.git")
+devtools::install_github("samirtouzani/GBMbaseline")
 ```
 
 ## Package Description
