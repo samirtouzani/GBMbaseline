@@ -61,6 +61,10 @@ gbm_baseline <- function(train_path,
   train <- clean_Temp(train)
   train <- clean_eload(train)
 
+  cat('"================================="\n')
+  cat('"Model Tuning"\n')
+  cat('"================================="\n')
+
   tune_results <- gbm_tune(train,
                            k_folds = k_folds,
                            variables = variables,
@@ -77,16 +81,21 @@ gbm_baseline <- function(train_path,
   # Final gbm model
   train_output <- train$eload
   train_input <- train[,variables]
+  cat('"================================="\n')
+  cat('"Final Model Training"\n')
+  cat('"================================="\n')
   gbm_model <- xgboost::xgboost(data = as.matrix(train_input),
                                 label = train_output,
-                                max.depth = tuned_parameters$best_depth,
+                                max_depth = tuned_parameters$best_depth,
                                 eta = tuned_parameters$best_lr,
-                                nround = tuned_parameters$best_iter,
+                                nrounds = tuned_parameters$best_iter,
                                 subsample = tuned_parameters$best_subsample,
-                                verbose = 0)
+                                verbose = 0,
+                                nthread = 1,
+                                save_period = NULL)
 
   # Fitting:
-  y_fit <- xgboost::predict(gbm_model, as.matrix(train_input))
+  y_fit <- predict(gbm_model, as.matrix(train_input))
   fit_residuals <- train_output - y_fit
 
   goodness_of_fit <- as.data.frame(matrix(nr=1,nc=3))
@@ -105,6 +114,9 @@ gbm_baseline <- function(train_path,
 
   # Prediction:
   if (!is.null(pred_path)) {
+   cat('"================================="\n')
+   cat('"Prediction"\n')
+   cat('"================================="\n')
     pred <- read.csv(file = pred_path, header=T, row.names = NULL, stringsAsFactors = F)
     pred <- time_var(pred)
     if (!is.null(days_off_path)) {
@@ -112,7 +124,7 @@ gbm_baseline <- function(train_path,
     }
     pred <- clean_Temp(pred)
     pred_input <- pred[,variables]
-    y_pred <- xgboost::predict(gbm_model, as.matrix(pred_input))
+    y_pred <- predict(gbm_model, as.matrix(pred_input))
     res$pred <- pred
     res$prediction <- y_pred
   }
@@ -155,6 +167,7 @@ gbm_baseline <- function(train_path,
 gbm_tune <- function(Data,k_folds,variables = c("Temp","tow"),
                      ncores, cv_blocks = "none",
                      iter, depth, lr,subsample){
+  cl <- parallel::makeCluster(ncores)
   output <- Data$eload
   input <- Data[,variables]
   if (cv_blocks=="days"){
@@ -181,15 +194,16 @@ gbm_tune <- function(Data,k_folds,variables = c("Temp","tow"),
     max_depth_i <- gbm_grid$max_depth[i]
     eta_i <- gbm_grid$eta[i]
     subsample_i <- gbm_grid$subsample[i]
-    list_res <- parallel::mclapply(list_train,
-                                   gbm_cv_parallel,
-                                   as.matrix(input),
-                                   output,
-                                   nrounds_i,
-                                   max_depth_i,
-                                   eta_i,
-                                   subsample_i,
-                                   mc.cores = ncores)
+    print(gbm_grid[i,])
+    list_res <- parallel::parLapply(cl,
+                                    list_train,
+                                    gbm_cv_parallel,
+                                    as.matrix(input),
+                                    output,
+                                    nrounds_i,
+                                    max_depth_i,
+                                    eta_i,
+                                    subsample_i)
     tab_cv_res <- do.call("rbind", list_res)
     tab_grid_res$iter[i] <- nrounds_i
     tab_grid_res$depth[i] <- max_depth_i
@@ -214,7 +228,7 @@ gbm_tune <- function(Data,k_folds,variables = c("Temp","tow"),
 }
 
 
-
+#' @export
 gbm_cv_parallel <- function(idx_train,input,output,nrounds,max_depth,eta,subsample){
   tab_res <- as.data.frame(matrix(nr=1,nc=3))
   names(tab_res) <- c("R2","RMSE","CVRMSE")
@@ -224,15 +238,17 @@ gbm_cv_parallel <- function(idx_train,input,output,nrounds,max_depth,eta,subsamp
   test_output <- output[idx_train]
   xgb_fit <- xgboost::xgboost(data = train,
                               label = train_output,
-                              max.depth = max_depth,
+                              max_depth = max_depth,
                               eta = eta,
-                              nround = nrounds,
+                              nrounds = nrounds,
                               objective = "reg:linear",
                               alpha=0,
                               colsample_bytree=1,
                               subsample=subsample,
-                              verbose = 0)
-  yhat <- xgboost::predict(xgb_fit, test)
+                              verbose = 0,
+                              nthread = 1,
+                              save_period = NULL)
+  yhat <- predict(xgb_fit, test)
   tab_res$R2[1] <- 1-mean((yhat - test_output)^2)/var(test_output)
   tab_res$RMSE[1] <- sqrt(mean((yhat - test_output)^2))
   tab_res$CVRMSE[1] <- 100*sqrt(mean((yhat - test_output)^2))/mean(test_output)

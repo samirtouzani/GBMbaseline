@@ -18,4 +18,3 @@ A dataframe of training or prediction data including the new time variable.
 \code{time_variables} splits the data into k folds by randomly selecting blocks of data,
 where each block correspond to a calendar day.
 }
-

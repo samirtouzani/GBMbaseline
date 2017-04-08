@@ -55,4 +55,3 @@ a gbm_baseline object, which alist with the following components:
 \description{
 \code{gbm_baseline} This function build a baseline model using gradient boosting machine algorithm.
 }
-

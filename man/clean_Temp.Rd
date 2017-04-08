@@ -22,4 +22,3 @@ A dataframe that correspond to the cleaned training or prediction data
 \code{clean_Temp} This function remove the observations which have Temperature values higher or lower
  than some predefined extreme values.
 }
-

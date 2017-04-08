@@ -18,4 +18,3 @@ A dataframe with timestamps converted into "\%m/\%d/\%y \%H:\%M" format
 \description{
 \code{time_format} This function convert the actual timestamps format into "\%m/\%d/\%y \%H:\%M" format
 }
-

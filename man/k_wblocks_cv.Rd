@@ -18,4 +18,3 @@ A list of row indexes corresponding to the training data.
 \code{k_wblocks_cv} splits the data into k folds by randomly selecting blocks of data,
 where each block correspond to a calendar week.
 }
-

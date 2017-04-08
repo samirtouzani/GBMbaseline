@@ -15,4 +15,3 @@ A dataframe with the computer R2, CV(RMSE) and NMBE
 \description{
 \code{pred_accuracy} This function compute the following prediction accuracy metrics:  R2, CV(RMSE) and NBME
 }
-

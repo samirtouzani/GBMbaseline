@@ -26,4 +26,3 @@ values higher or lower than some upper and lower thresholds. The upper threshold
  threshold is defined as \emph{n} percent lower than the quantile corresponding to the given lower probability \emph{L_ptresh}
  divided by \emph{n}.
 }
-

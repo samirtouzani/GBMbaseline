@@ -19,4 +19,3 @@ to the days off.
 \code{days_off_var} This function create a new binary variable that correspond to the dates of days off,
 which holidays or days when the building is not occupied.
 }
-

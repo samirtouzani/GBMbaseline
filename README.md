@@ -1,4 +1,4 @@
-# GBMbaseline 0.1.0
+# GBMbaseline 0.2.0
 *An R package for generating baseline models of electric load using Gradient Boosting Machine algorithm*
 
 ## Installation
@@ -68,7 +68,7 @@ gbm_res <- gbm_baseline(train_path = "train_LBNL.csv",
                         variables = c("Temp","tow")
                         )
 ```
-*train_path* and *pred_path* are the paths of the input data files of respectively training period and prediction period.  *days_off_path* is the path of the file that contain the holidays and vacation days. The argument variables correspond to the variables that will be considered by the function as input variables. In the above example the variables are the temperature (*Temp*) and the Time Of the Week (*tow*). Note that since the *days_off_path* is provided the algorithm will add automatically a third variable, which is named *"days_off"* that correspond to the US federal holidays. If additional variables are considered the user needs to add the names of these variables to the R vector of the *variables* argument. For example if data of the solar radiation are available the user will need to add this data to the training and prediction data files as new column and name it, for example *solar_rad* then the *variables* argument needs to be modified into *c("Temp","tow"."solar_rad")*.
+*train_path* and *pred_path* are the paths of the input data files of respectively training period and prediction period.  *days_off_path* is the path of the file that contain the holidays and vacation days. The argument variables correspond to the variables that will be considered by the function as input variables. In the above example the variables are the temperature (*Temp*) and the Time Of the Week (*tow*). Note that since the *days_off_path* is provided the algorithm will add automatically a third variable, which is named *"days_off"* that correspond to the US federal holidays. If additional variables are considered the user needs to add the names of these variables to the R vector of the *variables* argument. For example if data of the solar radiation are available the user will need to add this data to the training and prediction data files as new column and name it, for example *solar_rad* then the *variables* argument needs to be modified into *c("Temp","tow","solar_rad")*.
 
 #### Goodness of Fit Statistics
 

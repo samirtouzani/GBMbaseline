@@ -38,4 +38,3 @@ a list with the two following components:
 \code{gbm_tune} splits the data into k folds by randomly selecting blocks of data,
 where each block correspond to a calendar day.
 }
-

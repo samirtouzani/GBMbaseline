@@ -15,4 +15,3 @@ A dygraph time series plot
 \description{
 \code{gbm_plot} Read a gbm_baseline object and plots the actual, the fitted and the predicted data
 }
-

@@ -3,6 +3,7 @@
 export(clean_Temp)
 export(clean_eload)
 export(gbm_baseline)
+export(gbm_cv_parallel)
 export(gbm_fit_plot)
 export(gbm_plot)
 export(gbm_pred_plot)
