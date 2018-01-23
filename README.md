@@ -1,4 +1,4 @@
-# GBMbaseline 0.2.0
+# GBMbaseline 0.2.0 (This package is not maintained anymore. Please use [RMV2.0](https://github.com/LBNL-ETA/RMV2.0) package instead)
 *An R package for generating baseline models of electric load using Gradient Boosting Machine algorithm*
 
 ## Installation
